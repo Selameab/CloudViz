@@ -81,7 +81,7 @@ class CloudViewWidget(gl.GLViewWidget):
 
         corners = corners @ (euler_to_matrix(*box[6:9])).T + box[:3]
 
-        for segment in [[6, 7, 5, 4], [7, 3, 1, 5], [3, 2, 0, 1], [2, 6, 4, 0]]:
+        for segment in [[5, 6, 7, 5, 4], [7, 3, 1, 5], [3, 2, 0, 1], [2, 6, 4, 0]]:
             self.__draw_lines([corners[c] for c in segment], thickness=2, color=color)
 
     @staticmethod
@@ -111,7 +111,7 @@ class CloudViewWidget(gl.GLViewWidget):
         self.__draw_coordinate_frame()
         if pts is not None and len(pts) > 0:
             pi = gl.GLScatterPlotItem(pos=pts, size=self.pt_size, color=(0.4, 1.0, 0.2, 1.0) if pts_color is None else pts_color)
-            # pi.setGLOptions('opaque')
+            pi.setGLOptions('opaque')
             self.addItem(pi)
 
         if boxes is not None and len(boxes) > 0:
