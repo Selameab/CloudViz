@@ -6,8 +6,10 @@ from cloudviz.transforms import euler_to_matrix
 
 
 class CloudViewWidget(gl.GLViewWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, last_key_pressed=None):
         super(CloudViewWidget, self).__init__(parent)
+
+        self.last_key_pressed = last_key_pressed
 
         self.texts = []
         self.paintGL = self.__paint_gl
@@ -40,6 +42,8 @@ class CloudViewWidget(gl.GLViewWidget):
             QtWidgets.qApp.quit()
         elif event.key() == QtCore.Qt.Key_R:
             self.__reset_camera()
+        else:
+            self.last_key_pressed.value = event.key()
 
     def __reset_camera(self):
 
