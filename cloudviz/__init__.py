@@ -12,7 +12,7 @@ from cloudviz.dtypes import IPCData
 
 
 class Visualizer:
-    def __init__(self, title='CloudViz', window_size=(1200, 675), pt_size=2):
+    def __init__(self, title='CloudViz', window_size=(1200, 675), pt_size=2, background_color=(0, 0, 0)):
         BaseManager.register('IPCData', IPCData)
         base_manager = BaseManager()
         base_manager.start()
@@ -21,7 +21,8 @@ class Visualizer:
 
         self.last_key_pressed = Value('i', 0)
 
-        self.viz_process = Process(target=_VizProcess, args=(title, window_size, pt_size, self.ipc_data, self.last_key_pressed), daemon=True)
+        self.viz_process = Process(target=_VizProcess, args=(title, window_size, pt_size, background_color, self.ipc_data, self.last_key_pressed),
+                                   daemon=True)
         self.viz_process.start()
 
     def plot(self, pts=None, pts_color=None, boxes=None, boxes_color=None, texts=None):
@@ -43,7 +44,7 @@ class Visualizer:
 
 
 class _VizProcess:
-    def __init__(self, title, window_size, pt_size, ipc_data, last_key_pressed):
+    def __init__(self, title, window_size, pt_size, background_color, ipc_data, last_key_pressed):
         self.ipc_data = ipc_data
         self.last_key_pressed = last_key_pressed
 
@@ -51,6 +52,7 @@ class _VizProcess:
 
         self.vw = CloudViewWidget(last_key_pressed=last_key_pressed)
         self.vw.pt_size = pt_size
+        self.vw.setBackgroundColor(*background_color)
         self.vw.setMinimumSize(*window_size)
         self.vw.setWindowTitle(title)
         self.vw.show()
